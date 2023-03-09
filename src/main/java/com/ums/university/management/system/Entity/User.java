@@ -27,8 +27,8 @@ public class User {
     cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_role",
-            joinColumns = @JoinColumn(name = "email_Id",referencedColumnName = "emailId"),
-            inverseJoinColumns = @JoinColumn(name = "role_name",referencedColumnName = "roleName")
+            joinColumns = @JoinColumn(name = "email_Id",referencedColumnName = "email_address"),
+            inverseJoinColumns = @JoinColumn(name = "role_name",referencedColumnName = "role_name")
     )
     private List<Role> roles;
 }

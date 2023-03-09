@@ -21,7 +21,7 @@ public class Student {
     @SequenceGenerator(name = "student_sequence",
     sequenceName = "student_sequence",
     allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence")
     @Column(name = "student_id")
     private Long studentId;
 
@@ -42,8 +42,8 @@ public class Student {
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
             name = "student_course",
-            joinColumns = @JoinColumn(name = "student_id",referencedColumnName = "studentId"),
-            inverseJoinColumns = @JoinColumn(name = "course_id",referencedColumnName = "courseId")
+            joinColumns = @JoinColumn(name = "student_id",referencedColumnName = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id",referencedColumnName = "course_id")
     )
     private List<Course> courses;
 }
