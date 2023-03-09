@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,7 @@ public class User {
     @Column(name = "email_address", nullable = false,unique = true)
     private String emailId;
 
-    @Column(nullable = false,length = 15)
+    @Column(nullable = false)
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER,
@@ -30,5 +31,5 @@ public class User {
             joinColumns = @JoinColumn(name = "email_Id",referencedColumnName = "email_address"),
             inverseJoinColumns = @JoinColumn(name = "role_name",referencedColumnName = "role_name")
     )
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 }
