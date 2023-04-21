@@ -1,16 +1,17 @@
 package com.ums.university.management.system.Service.Impl;
 
-import com.ums.university.management.system.DTO.UserRoleDTO;
 import com.ums.university.management.system.Entity.Role;
 import com.ums.university.management.system.Entity.User;
+import com.ums.university.management.system.Error.RoleNotFound;
+import com.ums.university.management.system.Error.UserNotFound;
 import com.ums.university.management.system.Repository.RoleRepository;
 import com.ums.university.management.system.Repository.UserRepository;
 import com.ums.university.management.system.Service.DAO.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,31 +21,45 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    //Get user by userId
     @Override
     public User getUser(String emailId) {
+
         return userRepository.findById(emailId).get();
     }
 
+    //Get the List of all users
     @Override
     public List<User> getAllUsers() {
+
         return userRepository.findAll();
     }
 
+    //Add a new user
     @Override
     public void addUser(User user) {
+
         userRepository.save(user);
     }
 
+    //Assign a role to the user
     @Override
-    public void assignRole(UserRoleDTO userRoleDTO){
-        Role role = roleRepository.findById(userRoleDTO.getRoleName()).get();
-        User user = userRepository.findById(userRoleDTO.getEmailId()).get();
-        if(user==null || role==null){
-            return;
+    public void assignRole(String emailId, String role) throws RoleNotFound,UserNotFound{
+        Optional<Role> role1 = roleRepository.findById(role);
+        if(!role1.isPresent()){
+            throw new RoleNotFound("Role does not exist");
         }
-        List<Role> userRoles = user.getRoles();
-        userRoles.add(role);
-        user.setRoles(userRoles);
-        userRepository.save(user);
+        Optional<User> user = userRepository.findById(emailId);
+        if(!user.isPresent()){
+            throw new UserNotFound("User does not exist");
+        }
+        User user1 = user.get();
+        Role role2 = role1.get();
+
+        List<Role> userRoles = user.get().getRoles();
+        userRoles.add(role2);
+        user1.setRoles(userRoles);
+        userRepository.save(user1);
     }
 }

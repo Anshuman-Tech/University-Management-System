@@ -15,11 +15,14 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
+    //Add a new role
     @Override
     public void addRole(Role role) {
         roleRepository.save(role);
     }
 
+
+    //Get the list of all the roles
     @Override
     public List<Role> getRoles() {
         return roleRepository.findAll();
