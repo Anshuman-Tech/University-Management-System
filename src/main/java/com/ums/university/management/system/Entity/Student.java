@@ -25,19 +25,26 @@ public class Student {
     @Column(name = "student_id")
     private Long studentId;
 
+    @Column(name = "first_name",nullable = false,length = 50)
+    private String firstName;
+
+    @Column(name = "last_name",nullable = true)
+    private String lastname;
+
     @Column(name = "email_id",nullable = false, unique = true)
     private String emailId;
 
-    @Column(name = "password",length = 15,nullable = false)
-    private String password;
+//    @Column(name = "password",length = 15,nullable = false)
+//    private String password;
 
     @Column(nullable = false)
     private String dob;
+
     @Column(name = "phone_number", nullable = false, length = 10)
     private String phone;
 
-    @Transient
-    Guardian guardian;
+    @Embedded
+    private Guardian guardian;
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(

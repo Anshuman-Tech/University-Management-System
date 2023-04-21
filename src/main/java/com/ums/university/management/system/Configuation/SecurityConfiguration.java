@@ -19,13 +19,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class MyConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
+    private CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
 
     @Autowired
     private JWTAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
 
@@ -43,7 +43,7 @@ public class MyConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/addRole","/assignRole").hasRole("Admin")
-                .antMatchers("/register").hasAnyRole("Admin","Normal")
+                .antMatchers("/register","/token").hasAnyRole("Admin","Normal")
                 .antMatchers("/")
                 .permitAll()
                 .anyRequest()
