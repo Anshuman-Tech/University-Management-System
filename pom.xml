@@ -18,6 +18,12 @@
 	</properties>
 	<dependencies>
 
+<!--	Java Mail Sender for sending email-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
 <!--		Spring data JPA-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,10 +63,10 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>javax.xml.bind</groupId>-->
+<!--			<artifactId>jaxb-api</artifactId>-->
+<!--		</dependency>-->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -5,6 +5,7 @@ import com.ums.university.management.system.Entity.Role;
 import com.ums.university.management.system.Entity.User;
 import com.ums.university.management.system.Error.RoleNotFound;
 import com.ums.university.management.system.Error.UserNotFound;
+import com.ums.university.management.system.Service.DAO.EmailService;
 import com.ums.university.management.system.Service.Impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class UserController{
     private UserServiceImpl userServiceImpl;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private EmailService emailService;
 
     @GetMapping("/getUser/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") String emailId){
@@ -31,13 +32,9 @@ public class UserController{
     }
 
     @PostMapping("/register")
-    ResponseEntity<String> addUser(@RequestBody UserDTO userDTO){
-        User user = User.builder()
-                .emailId(userDTO.getEmailId())
-                .password(passwordEncoder.encode(userDTO.getPassword()))
-                .roles(Arrays.asList(new Role("Normal")))
-                .build();
-        userServiceImpl.addUser(user);
+    public ResponseEntity<String> addUser(@RequestBody UserDTO userDTO){
+        User savedUser = userServiceImpl.addUser(userDTO);
+        emailService.simpleEmail(savedUser.getEmailId(),"You have been registered successfully with userName - "+userDTO.getEmailId(),"Registered Successfully");
         return new ResponseEntity("User created successfully",HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
 package com.ums.university.management.system.Service.DAO;
 
+import com.ums.university.management.system.DTO.UserDTO;
 import com.ums.university.management.system.Entity.User;
 import com.ums.university.management.system.Error.RoleNotFound;
 import com.ums.university.management.system.Error.UserNotFound;
@@ -12,7 +13,7 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    void addUser(User user);
+    User addUser(UserDTO userDTO);
 
     void assignRole(String userId,String role) throws RoleNotFound, UserNotFound;
 }
