@@ -34,9 +34,6 @@ public class Student {
     @Column(name = "email_id",nullable = false, unique = true)
     private String emailId;
 
-//    @Column(name = "password",length = 15,nullable = false)
-//    private String password;
-
     @Column(nullable = false)
     private String dob;
 

@@ -56,4 +56,14 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(errorResponse,HttpStatus.FOUND);
     }
 
+
+    @ExceptionHandler(StudentNotFound.class)
+    public ResponseEntity<ErrorResponse> studentNotFound(Exception e){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .message(e.getMessage())
+                .status(HttpStatus.FOUND)
+                .build();
+        return new ResponseEntity<>(errorResponse,HttpStatus.FOUND);
+    }
+
 }
