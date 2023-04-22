@@ -1,16 +1,16 @@
 package com.ums.university.management.system.Service.Impl;
 
 import com.ums.university.management.system.Entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@ToString
 public class CustomUserDetails implements UserDetails {
 
 
@@ -23,12 +23,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> simpleGrantedAuthority = new ArrayList<>();
-        Iterator it = user.getRoles().iterator();
-        while(it.hasNext()){
-            simpleGrantedAuthority.add((SimpleGrantedAuthority) it.next());
-        }
-      return simpleGrantedAuthority;
+        List<SimpleGrantedAuthority> simpleGrantedAuthorities = user
+                .getRoles()
+                .stream()
+                .map(role -> {return new SimpleGrantedAuthority(role.getRoleName());})
+                .collect(Collectors.toList());
+        return simpleGrantedAuthorities;
     }
 
     @Override

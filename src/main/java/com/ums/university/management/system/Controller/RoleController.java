@@ -6,28 +6,29 @@ import com.ums.university.management.system.Service.Impl.RoleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/role")
 public class RoleController {
 
     @Autowired
     private RoleServiceImpl roleServiceImpl;
 
     @PostMapping("/addRole")
+//    @PreAuthorize("hasAnyAuthority('Admin','Normal')")
+    @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity addRole(@RequestBody RoleDTO roleDTO){
-        Role role = new Role(roleDTO.getRoleName());
-        roleServiceImpl.addRole(role);
-        return new ResponseEntity("Role added successfully", HttpStatus.OK);
+        Role role = roleServiceImpl.addRole(roleDTO);
+        return new ResponseEntity("Role: " + role.getRoleName() + " has been added successfully", HttpStatus.OK);
     }
 
     @GetMapping("/getRoles")
-    public List<Role> getRoles(){
+    @PreAuthorize("hasAuthority('Admin')") //Only a user with role as Admin can access this route.
+    public List<Role> getRoles() {
        return roleServiceImpl.getRoles();
     }
 }

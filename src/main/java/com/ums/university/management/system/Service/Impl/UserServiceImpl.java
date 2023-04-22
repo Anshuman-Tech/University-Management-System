@@ -1,5 +1,6 @@
 package com.ums.university.management.system.Service.Impl;
 
+import com.ums.university.management.system.DTO.UserDTO;
 import com.ums.university.management.system.Entity.Role;
 import com.ums.university.management.system.Entity.User;
 import com.ums.university.management.system.Error.RoleNotFound;
@@ -8,10 +9,13 @@ import com.ums.university.management.system.Repository.RoleRepository;
 import com.ums.university.management.system.Repository.UserRepository;
 import com.ums.university.management.system.Service.DAO.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -21,6 +25,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Get user by userId
     @Override
@@ -38,9 +45,13 @@ public class UserServiceImpl implements UserService {
 
     //Add a new user
     @Override
-    public void addUser(User user) {
-
-        userRepository.save(user);
+    public User addUser(UserDTO userDTO) {
+        User user = User.builder()
+                .emailId(userDTO.getEmailId())
+                .password(passwordEncoder.encode(userDTO.getPassword()))
+                .roles(Arrays.asList(new Role("Normal")))
+                .build();
+        return userRepository.save(user);
     }
 
     //Assign a role to the user
