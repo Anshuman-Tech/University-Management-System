@@ -34,8 +34,9 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.OK).body(student);
     }
 
-    public ResponseEntity<List<Student>> getAllStudents(){
-        List<Student> students = studentService.getAllStudents();
+    @GetMapping("/getAllStudents")
+    public ResponseEntity<List<Student>> getAllStudents(@RequestParam("page") int pageNumber,@RequestParam("size") int pageSize,@RequestParam("sortBy") String sortBy){
+        List<Student> students = studentService.getAllStudents(pageNumber,pageSize,sortBy);
         return ResponseEntity.status(HttpStatus.OK).body(students);
     }
     @PutMapping("/updateStudent/{studentId}")

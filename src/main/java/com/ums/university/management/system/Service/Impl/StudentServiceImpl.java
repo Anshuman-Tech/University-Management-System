@@ -8,8 +8,13 @@ import com.ums.university.management.system.Error.StudentNotFound;
 import com.ums.university.management.system.Repository.StudentRepository;
 import com.ums.university.management.system.Service.DAO.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.PageFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +25,13 @@ public class StudentServiceImpl implements StudentService {
     private StudentRepository studentRepository;
 
     @Override
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<Student> getAllStudents(int pageNumber,int pageSize,String sortBy) {
+        Sort sort = Sort.by(sortBy);
+//        Sort sort = Sort.by(sortBy).descending(); //For sorting in descending order
+        Pageable pageable = PageRequest.of(pageNumber,pageSize, sort);
+        Page<Student> page = studentRepository.findAll(pageable);
+        List<Student> students = page.getContent();
+        return students;
     }
 
     @Override

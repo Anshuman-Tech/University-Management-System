@@ -14,7 +14,7 @@ public interface StudentService {
 
     Student getStudent(String emailId);
 
-    List<Student> getAllStudents();
+    List<Student> getAllStudents(int pageNumber,int pageSize,String sortBy);
 
     Student updateStudent(Long studentId,StudentDTO studentDTO) throws StudentNotFound;
 
