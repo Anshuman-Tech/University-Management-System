@@ -4,6 +4,7 @@ import com.ums.university.management.system.Service.Impl.CustomUserDetailsServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,9 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true) //For accessing the routes based on role
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
@@ -29,6 +32,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+
+    //localhost:port/swagger-ui/index.html -> is used to access the swagger ui for api documentation
+    public static final String[] SWAGGER_URLS = {
+            "/v3/api-docs",
+            "/v2/api-docs",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**"
+    };
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -39,6 +52,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
 //                .antMatchers("/role/addRole","/user/assignRole").hasRole("Admin")
 //                .antMatchers("/login/token").hasAnyRole("Admin","Normal")
+                .antMatchers(SWAGGER_URLS).permitAll()
+                .antMatchers(HttpMethod.GET).permitAll() // used to permit all the routes with get Mapping.
                 .antMatchers("/user/register","/login/token")
                 .permitAll()
                 .anyRequest()
